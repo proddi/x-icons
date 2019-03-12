@@ -1,15 +1,37 @@
-import { render } from 'https://unpkg.com/lit-html?module';
+import { render, html } from 'lit-html/lit-html.js';
 import { getMeta } from './meta.js';
 
+/**
 
+The `x-icon` element displays an icon. The size is defined in the icon-set and by default 1em.
+
+Example using src:
+
+    <x-icon src="star.png"></x-icon>
+
+Example setting size to 32px x 32px:
+
+    <x-icon style="width:32px" src="big_star.png"></x-icon>
+
+See `<x-iconset-svg>` and `<x-iconset-img>` for more information about how to create a custom iconset.
+
+@group X Elements
+@element x-icon
+@demo demo/index.html
+@hero hero.svg
+@homepage https://github.com/proddi/x-icons
+*/
 class XIcon extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({mode: 'open'});
+
+        /**
+         * The name of the icon to use. The name should be of the form: `iconset_name:icon_name`.
+         * @type {String}
+         */
         this.icon = this.getAttribute('icon');
         this._size = this.getAttribute('size');
-
-
 
         this._updateIcon();
     }

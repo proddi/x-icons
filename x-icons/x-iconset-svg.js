@@ -1,7 +1,18 @@
-import { html, render } from 'https://unpkg.com/lit-html?module';
+import { html, render } from 'lit-html/lit-html.js';
 import { setMeta } from './meta.js';
 
 
+/**
+
+The `x-iconset-svg` element allows users to define their own icon sets that contain svg icons.
+
+
+@group X Elements
+@element x-iconset-svg
+@demo demo/index.html
+@hero hero.svg
+@homepage https://github.com/proddi/x-icons
+*/
 class XIconsetSvg extends HTMLElement {
     constructor() {
         super();

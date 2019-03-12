@@ -1,5 +1,6 @@
 [![Published on NPM](https://img.shields.io/npm/v/@proddi/x-icons.svg)](https://www.npmjs.com/package/@proddi/x-icons)
 [![Build status](https://travis-ci.org/proddi/x-icons.svg?branch=master)](https://travis-ci.org/proddi/x-icons)
+[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://webcomponents.org/element/@proddi/x-icons)
 
 # x-icons - easy svg and png icons
 

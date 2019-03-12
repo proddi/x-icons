@@ -1,0 +1,31 @@
+{
+  "description": "icons the easy way",
+  "keywords": [
+    "web-components",
+    "x-icons",
+    "icon"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:proddi/x-icons.git"
+  },
+  "name": "@proddi/x-icons",
+  "devDependencies": {
+    "@polymer/iron-demo-helpers": "^3.0.1",
+    "polymer-cli": ">=1.9.5"
+  },
+  "scripts": {
+    "format": "webmat"
+  },
+  "main": "x-icons/index.js",
+  "module": "x-icons/index.js",
+  "version": "0.0.2",
+  "license": "MIT",
+  "author": {
+    "name": "proddi",
+    "url": "https://github.com/proddi/x-icons"
+  },
+  "dependencies": {
+    "lit-html": "^1.0.0-rc.2"
+  }
+}
