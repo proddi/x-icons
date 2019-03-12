@@ -34,7 +34,7 @@
         </svg>
     </x-iconset-svg>
     <x-iconset-svg name="transit" href="icons/transit-icons.svg"></x-iconset-svg>
-    <x-iconset-img name="demo" size="1em" width="256" icon-size="64" href="icons/demo-icons.png"
+    <x-iconset-img name="demo" size="1em" width="256" icon-size="64" src="icons/demo-icons.png"
         icons="favorite play valid map-marker place profile star home invalid star2 route preferences layers date my-profile"></x-iconset-img>
 </head>
 <body>
@@ -116,7 +116,6 @@
         renderIconSet('mgnt', '#mgnt-icons > span')
         renderIconSet('demo', '#demo-icons > span')
 
-
         class X extends HTMLElement {
             constructor() {
                 super();
@@ -125,16 +124,12 @@
 
                 this.attachShadow({mode: 'open'});
 
-
                 const iconSet = getMeta('icons-iconset', this._setName);
                 customElements.whenDefined(iconSet.localName)
                     .then(_ => iconSet.getIconNames())
                     .then(names => names.map(name => htmlToElement(this._template.replace(/{{icon}}/g, `${iconSet._name}:${name}`))))
                     .then(icons => icons.map(icon => this.shadowRoot.appendChild(icon)))
                     ;
-
-//                this.shadowRoot.appendChild(htmlToElement(this._template.replace(/{{icon}}/g, 'transit:bus')));
-//                render(this.render(), this.shadowRoot);
 
             }
         }
@@ -143,9 +138,9 @@
 
     </script>
 
-    <ul style="font-size: 3em">
+    <ul style="font-size: 2em">
         <li>
-            Transit:
+            <header>Transit icons:</header>
             <x-x icon-set="transit">
                 <template>
                     <x-icon title="{{icon}}" icon="{{icon}}"></x-icon>
@@ -154,7 +149,7 @@
         </li>
 
         <li>
-            Demo:
+            <header>Pixel icons:</header>
             <x-x icon-set="demo">
                 <template>
                     <x-icon title="{{icon}}" icon="{{icon}}"></x-icon>
@@ -163,7 +158,7 @@
         </li>
 
         <li>
-            Management:
+            <header>SVG icons with predifined size:</header>
             <x-x icon-set="mgnt">
                 <template>
                     <x-icon title="{{icon}}" icon="{{icon}}"></x-icon>
@@ -172,9 +167,8 @@
         </li>
 
         <li>
-        <x-iconset-svg size="1.5em" icon-size="48" name="transit-colored" href="icons/transit-icons-colored.svg"></x-iconset-svg>
-
-            Transit (colored):
+            <x-iconset-svg icon-size="48" name="transit-colored" href="icons/transit-icons-colored.svg"></x-iconset-svg>
+            <header>SVG icons with <code>icon-size="48"</code>:</header>
             <x-x icon-set="transit-colored">
                 <template>
                     <x-icon title="{{icon}}" icon="{{icon}}"></x-icon>

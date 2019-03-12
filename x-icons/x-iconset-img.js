@@ -7,7 +7,7 @@ class XIconsetImg extends HTMLElement {
         super();
         if (!this.hasAttribute('name')) this.setAttribute('name', 'default-iconset');
         this._name = this.getAttribute('name');
-        this._href = this.getAttribute('href');
+        this._src = this.getAttribute('src');
         this._size = this.getAttribute('size') || '1em';
         this._width = this.getAttribute('width');
         this._icons = this.getAttribute('icons').split(/[ ,]/);
@@ -47,7 +47,7 @@ class XIconsetImg extends HTMLElement {
                     display: inline-block;
                     height: 100%;
                     width: 100%;
-                    background: url(${this._href});
+                    background: url(${this._src});
                     background-size: calc(${icon._size || this._size} * ${this._iconsPerRow});
                     background-position: ${100 / (this._iconsPerRow-1) * x}% ${100 / (this._iconsPerRow-1) * y}%;
                     background-repeat: no-repeat;
