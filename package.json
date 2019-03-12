@@ -7,7 +7,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git@github.com:proddi/x-icons.git"
+    "url": "git://github.com/proddi/x-icons.git"
   },
   "name": "@proddi/x-icons",
   "devDependencies": {
@@ -19,7 +19,7 @@
   },
   "main": "x-icons/index.js",
   "module": "x-icons/index.js",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "license": "MIT",
   "author": {
     "name": "proddi",
