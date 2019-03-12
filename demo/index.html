@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script type="module" src="../x-icons/x-iconset-svg.js"></script>
+    <script type="module" src="../x-icons/x-iconset-img.js"></script>
+    <script type="module" src="../x-icons/x-icon.js"></script>
+
+    <style>
+        ul {
+            fo_nt-size: 2em;
+            li_ne-height: 1.2;
+        }
+        ul > li {
+            transition: all .3s ease;
+        }
+        ul > li:hover {
+            color: red;
+            background: #ddd;
+        }
+        .inline-headers H1,
+        .inline-headers H3,
+        .inline-headers H5 { display: inline-block; }
+        li > * { margin: 0; }
+    </style>
+
+    <x-iconset-svg name="mgnt" href="icons/management-icons.svg">
+        <svg>
+            <symbol id="ext-1" viewBox="0 0 16 16">
+                <rect x="1" y="1" width="15" height="15"/>
+            </symbol>
+            <symbol id="ext-2" viewBox="0 0 16 16">
+                <circle cx="8" cy="8" r="7"/>
+            </symbol>
+        </svg>
+    </x-iconset-svg>
+    <x-iconset-svg name="transit" href="icons/transit-icons.svg"></x-iconset-svg>
+    <x-iconset-img name="demo" size="1em" width="256" icon-size="64" href="icons/demo-icons.png"
+        icons="favorite play valid map-marker place profile star home invalid star2 route preferences layers date my-profile"></x-iconset-img>
+</head>
+<body>
+    <h3>SVG icons: <small><i>(uncolored)</i></small></h3>
+    <ul>
+        <li>Icons: <x-icon icon="transit:bus"></x-icon><x-icon icon="transit:tram"></x-icon><x-icon icon="transit:train"></x-icon><x-icon icon="transit:subway"></x-icon></li>
+        <li>Coloring: <x-icon style="color:green" icon="transit:bus"></x-icon><x-icon style="color:blue" icon="transit:tram"></x-icon><x-icon style="color:#947" icon="transit:train"></x-icon><x-icon style="color:#396" icon="transit:subway"></x-icon></li>
+        <li>Sizing (default 1em):<x-icon title="1em" size="1em" icon="transit:bus"></x-icon> 2em:<x-icon title="2em" size="2em" icon="transit:tram"></x-icon>, 32px<x-icon title="32px" size="32px" icon="transit:train"></x-icon></li>
+        <li class="inline-headers">
+            Size inheritance:
+            &lt;h1&gt;<h1>H1 header<x-icon icon="transit:bus"></x-icon></h1>&lt;/h1&gt;
+            &lt;h1&gt;<h3>H3 header<x-icon icon="transit:bus"></x-icon></h3>&lt;/h3&gt;
+            &lt;h1&gt;<h5>H5 header<x-icon icon="transit:bus"></x-icon></h5>&lt;/h5&gt;
+            <p>
+            &lt;p&gt;Default size <x-icon icon="transit:bus"></x-icon> with &lt;small&gt;<small><x-icon icon="transit:bus"></x-icon></small>&lt;/small&gt; and &lt;sup&gt;<sup><x-icon icon="transit:bus"></x-icon></sup>&lt;/sup&gt;&lt;p&gt;
+            </p>
+        <li><i>Icon <x-icon icon="transit:tram"></x-icon> Tram</i></li>
+        <li><b>Icon <x-icon icon="transit:subway"></x-icon> Subway</b></li>
+        <li><a href="">Icon <x-icon icon="transit:walk"></x-icon> Walk</a></li>
+    </ul>
+
+    <h3>SVG icons: <small><i>(colored)</i></small></h3>
+    <ul>
+        <li>Icon <x-icon icon="mgnt:customer-service"></x-icon> Customer Service</li>
+        <li><i>Icon <x-icon icon="mgnt:statistics"></x-icon> Statistics</i></li>
+        <li><b>Icon <x-icon icon="mgnt:presentation"></x-icon> Presentation</b></li>
+        <li><a href="">Icon <x-icon icon="mgnt:customer-service"></x-icon> Customer Service</a></li>
+        <li>Icon <x-icon icon="mgnt:ext-1"></x-icon> inner extended</li>
+    </ul>
+
+    <p>
+        <h4>Raster icons:</h4>
+        <div>Iconset size: (default=1em) <x-icon icon="demo:place"></x-icon>, <x-icon icon="demo:profile"></x-icon>, <x-icon icon="demo:star"></x-icon></div>
+        <div>Individual sizes: 2em:<x-icon size="2em" icon="demo:favorite"></x-icon>, 30px:<x-icon size="30px" icon="demo:favorite"></x-icon>, 200%<x-icon size="200%" icon="demo:favorite"></x-icon></div>
+    </p>
+    <ul>
+        <li>Icon <x-icon icon="demo:place"></x-icon> Place</li>
+        <li><i>Icon <x-icon icon="demo:star"></x-icon> Star</i></li>
+        <li><b>Icon <x-icon icon="demo:profile"></x-icon> Profile</b></li>
+        <li><a href="">Icon <x-icon icon="demo:valid"></x-icon> Valid</a></li>
+    </ul>
+
+    <p id="transit-icons" style="font-size:2em">
+        Transit icons: <span></span>
+    </p>
+
+    <p id="mgnt-icons" style="font-size:2em">
+        Management icons: <span></span>
+    </p>
+
+    <p id="demo-icons" style="font-size:2em">
+        Pixel icons: <span></span>
+    </p>
+
+    <script type="module">
+        import { html, render } from 'https://unpkg.com/lit-html?module';
+        import { until } from 'https://unpkg.com/lit-html/directives/until.js';
+        import { getMeta } from '../x-icons/meta.js';
+
+        function htmlToElement(html) {
+            const template = document.createElement('template');
+            html = html.trim(); // Never return a text node of whitespace as the result
+            template.innerHTML = html;
+            return template.content.firstChild;
+        }
+
+        async function renderIconSet(setName, targetId) {
+            const target = document.body.querySelector(targetId);
+            const iconSet = getMeta('icons-iconset', setName);
+            return customElements.whenDefined(iconSet.localName)
+                .then(_ => iconSet.getIconNames())
+                .then(names => names.map(name => htmlToElement(`<x-icon title="${name}" icon="${iconSet._name}:${name}"></x-icon>`)))
+                .then(icons => render(html`${icons.map(icon => html`${icon}`)}`, target))
+                ;
+        }
+
+
+        renderIconSet('transit', '#transit-icons > span')
+        renderIconSet('mgnt', '#mgnt-icons > span')
+        renderIconSet('demo', '#demo-icons > span')
+
+
+        class X extends HTMLElement {
+            constructor() {
+                super();
+                this._setName = this.getAttribute('icon-set');
+                this._template = this.querySelector('template').innerHTML;
+
+                this.attachShadow({mode: 'open'});
+
+
+                const iconSet = getMeta('icons-iconset', this._setName);
+                customElements.whenDefined(iconSet.localName)
+                    .then(_ => iconSet.getIconNames())
+                    .then(names => names.map(name => htmlToElement(this._template.replace(/{{icon}}/g, `${iconSet._name}:${name}`))))
+                    .then(icons => icons.map(icon => this.shadowRoot.appendChild(icon)))
+                    ;
+
+//                this.shadowRoot.appendChild(htmlToElement(this._template.replace(/{{icon}}/g, 'transit:bus')));
+//                render(this.render(), this.shadowRoot);
+
+            }
+        }
+
+        customElements.define('x-x', X);
+
+    </script>
+
+    <ul style="font-size: 3em">
+        <li>
+            Transit:
+            <x-x icon-set="transit">
+                <template>
+                    <x-icon title="{{icon}}" icon="{{icon}}"></x-icon>
+                </template>
+            </x-x>
+        </li>
+
+        <li>
+            Demo:
+            <x-x icon-set="demo">
+                <template>
+                    <x-icon title="{{icon}}" icon="{{icon}}"></x-icon>
+                </template>
+            </x-x>
+        </li>
+
+        <li>
+            Management:
+            <x-x icon-set="mgnt">
+                <template>
+                    <x-icon title="{{icon}}" icon="{{icon}}"></x-icon>
+                </template>
+            </x-x>
+        </li>
+
+        <li>
+        <x-iconset-svg size="1.5em" icon-size="48" name="transit-colored" href="icons/transit-icons-colored.svg"></x-iconset-svg>
+
+            Transit (colored):
+            <x-x icon-set="transit-colored">
+                <template>
+                    <x-icon title="{{icon}}" icon="{{icon}}"></x-icon>
+                </template>
+            </x-x>
+        </li>
+    </ul>
+
+</body>
+</html>
