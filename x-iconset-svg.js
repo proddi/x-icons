@@ -10,7 +10,6 @@ The `x-iconset-svg` element allows users to define their own icon sets that cont
 @group X Elements
 @element x-iconset-svg
 @demo demo/index.html
-@hero hero.svg
 @homepage https://github.com/proddi/x-icons
 */
 class XIconsetSvg extends HTMLElement {
@@ -33,13 +32,11 @@ class XIconsetSvg extends HTMLElement {
         [this._iconWidth, this._iconHeight] = [parseInt(this._iconWidth), parseInt(this._iconHeight)];
         this._iconRatio = this._iconHeight / this._iconWidth;
 
-
-        setMeta('icons-iconset', this._name, this);
-
+        // render
         this.attachShadow({mode: 'open'});
         render(this.render(), this.shadowRoot);
 
-        // attach extended svgs
+        // attach additional slot svgs
         this._innerIcons = {};
         this.shadowRoot.querySelector('slot')
             .assignedElements()
@@ -50,6 +47,8 @@ class XIconsetSvg extends HTMLElement {
             .forEach(([name, markup]) => this._innerIcons[name] = markup)
             ;
 
+        // register iconset
+        setMeta('icons-iconset', this._name, this);
     }
 
     async getIconNames() {
@@ -72,21 +71,25 @@ class XIconsetSvg extends HTMLElement {
         `
     }
 
-    buildIconTemplate(icon) {
+    applyIcon(root, icon) {
+        render(this.buildIconTemplate(icon.iconName, icon.size), root);
+    }
+
+    buildIconTemplate(iconName, iconSize) {
         return html`
             <style>
                 :host {
-                    width: calc(${icon._size || this._size});
+                    width: calc(${iconSize || this._size});
                     display: inline-block;
-                    vertical-align: text-bottom;
+                    vertical-align: middle;
                 }
                 svg {
                     width: 100%;
-                    vertical-align: middle;
+                    v_ertical-align: middle;
                 }
             </style>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${this._iconWidth} ${this._iconHeight}" style="fill:currentColor;">
-                <use href="${this._innerIcons[icon.iconName] ? '' : this._href}#${icon.iconName}"/>
+                <use href="${this._innerIcons[iconName] ? '' : this._href}#${iconName}"/>
             </svg>
         `
     }

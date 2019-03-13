@@ -10,13 +10,12 @@ The `x-iconset-img` element allows users to define their own icon sets that cont
 @group X Elements
 @element x-iconset-img
 @demo demo/index.html
-@hero hero.svg
 @homepage https://github.com/proddi/x-icons
 */
 class XIconsetImg extends HTMLElement {
     constructor() {
         super();
-        if (!this.hasAttribute('name')) this.setAttribute('name', 'default-iconset');
+//        if (!this.hasAttribute('name')) this.setAttribute('name', 'default-iconset');
         this._name = this.getAttribute('name');
         this._src = this.getAttribute('src');
         this._size = this.getAttribute('size') || '1em';
@@ -42,16 +41,20 @@ class XIconsetImg extends HTMLElement {
         return Promise.resolve(this._icons);
     }
 
-    buildIconTemplate(icon) {
-        let index = this._icons.indexOf(icon.iconName);
+    applyIcon(root, icon) {
+        render(this.buildIconTemplate(icon.iconName, icon.size), root);
+    }
+
+    buildIconTemplate(iconName, iconSize) {
+        let index = this._icons.indexOf(iconName);
         let x = index % this._iconsPerRow;
         let y = Math.floor(index /this._iconsPerRow);
         return html`
             <style>
                 :host {
                     display: inline-block;
-                    width: calc(${icon._size || this._size});
-                    height: calc(${icon._size || this._size} * ${this._iconRatio});
+                    width: calc(${iconSize || this._size});
+                    height: calc(${iconSize || this._size} * ${this._iconRatio});
                     vertical-align: middle;
                 }
                 i {
@@ -59,7 +62,7 @@ class XIconsetImg extends HTMLElement {
                     height: 100%;
                     width: 100%;
                     background: url(${this._src});
-                    background-size: calc(${icon._size || this._size} * ${this._iconsPerRow});
+                    background-size: calc(${iconSize || this._size} * ${this._iconsPerRow});
                     background-position: ${100 / (this._iconsPerRow-1) * x}% ${100 / (this._iconsPerRow-1) * y}%;
                     background-repeat: no-repeat;
                 }
