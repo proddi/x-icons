@@ -1,4 +1,5 @@
 import { html, render } from 'lit-html/lit-html.js';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { setMeta } from './meta.js';
 
 
@@ -21,6 +22,12 @@ class XIconsetSvg extends HTMLElement {
         // the pixel size of the icons in this icon set
         this._size = this.getAttribute('size') || '1em';
 
+        /**
+         * The scale gets multiplied with the icon's size. (default=1)
+         * @type {Float}
+         */
+        this.scale = this.getAttribute('scale') || '1';
+
         let iconSize = this.getAttribute('icon-size');
         if (!iconSize) {
             iconSize = "24";
@@ -41,14 +48,41 @@ class XIconsetSvg extends HTMLElement {
         this.shadowRoot.querySelector('slot')
             .assignedElements()
             .map(el => Array.from(el.querySelectorAll('[id]'))
-                        .map(node => [node.getAttribute('id'), node.outerHTML])
+                        .map(node => [node.getAttribute('id'), node, node.outerHTML])
             )
             .reduce((p, c) => p.concat(c), [])
-            .forEach(([name, markup]) => this._innerIcons[name] = markup)
+            .forEach(([name, node, markup]) => this._innerIcons[name] = [node, markup])
             ;
 
         // register iconset
         setMeta('icons-iconset', this._name, this);
+    }
+
+    static get observedAttributes() { return ['scale', 'href']; }
+
+    attributeChangedCallback(name, _, value) {
+        switch(name) {
+            case 'scale':
+                this._scaleChanged(value);
+                break;
+            case 'href':
+                this._hrefChanged(value)
+                break;
+        }
+    }
+
+    _scaleChanged(scale) {
+        if (scale !== this.scale) {
+            this.scale = scale;
+            setMeta('icons-iconset', this._name, this);
+        }
+    }
+
+    _hrefChanged(src) {
+        if (src !== this._src) {
+            this._href = src;
+            setMeta('icons-iconset', this._name, this);
+        }
     }
 
     async getIconNames() {
@@ -73,19 +107,23 @@ class XIconsetSvg extends HTMLElement {
 
     applyIcon(root, icon) {
         render(this.buildIconTemplate(icon.iconName, icon.size), root);
+        // TODO: individual rendering?
+        const inlineIcon = this._innerIcons[icon.iconName];
+        if (inlineIcon) {
+            root.querySelector('svg').appendChild(inlineIcon[0].cloneNode(true));
+        }
     }
 
     buildIconTemplate(iconName, iconSize) {
         return html`
             <style>
                 :host {
-                    width: calc(${iconSize || this._size});
+                    width: calc(${iconSize || this._size} * ${this.scale});
                     display: inline-block;
                     vertical-align: middle;
                 }
                 svg {
                     width: 100%;
-                    v_ertical-align: middle;
                 }
             </style>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${this._iconWidth} ${this._iconHeight}" style="fill:currentColor;">

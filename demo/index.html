@@ -113,6 +113,20 @@
     </template>
   </demo-snippet>
 
+  <h3>SVG iconset with embeded icons</h3>
+  <demo-snippet id="demo-colored" class="centered-demo">
+    <template>
+      <x-iconset-svg name="inline" icon-size="16">
+        <svg>
+          <circle id="circle" cx="8" cy="8" r="8"/>
+          <rect id="square" x="1" y="1" width="14" height="14"/>
+        </svg>
+      </x-iconset-svg>
+      <x-icon size="3em" icon="inline:circle"></x-icon>Circle
+      <x-icon size="3em" icon="inline:square"></x-icon>Square
+    </template>
+  </demo-snippet>
+
   <h3>Raster icons</h3>
   <demo-snippet id="demo-raster-icons" class="centered-demo">
     <template>
@@ -121,7 +135,7 @@
             filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, .25)) drop-shadow(0px 0px 1px black);
         }
       </style>
-      <x-iconset-img name="raster-64" size="2em" width="256" icon-size="64" src="icons/raster-icons-64.png"
+      <x-iconset-img name="raster-64" scale="2" width="256" icon-size="64" src="icons/raster-icons-64.png"
             icons="favorite play valid map-marker place profile star home invalid star2 route preferences layers date my-profile"></x-iconset-img>
       <span><x-icon icon="raster-64:place"></x-icon>(iconset-size)</span>
       <span><x-icon size="3em" icon="raster-64:profile"></x-icon>3em</span>

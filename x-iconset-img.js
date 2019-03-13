@@ -20,6 +20,12 @@ class XIconsetImg extends HTMLElement {
         this._src = this.getAttribute('src');
         this._size = this.getAttribute('size') || '1em';
         this._width = this.getAttribute('width');
+
+        /**
+         * The scale gets multiplied with the icon's size. (default=1)
+         * @type {Float}
+         */
+        this.scale = '1';
         this._icons = this.getAttribute('icons').split(/[ ,]/);
         let iconSize = this.getAttribute('icon-size');
         if (!iconSize) {
@@ -35,6 +41,33 @@ class XIconsetImg extends HTMLElement {
         this._iconsPerRow = this._width / this._iconWidth;
 
         setMeta('icons-iconset', this._name, this);
+    }
+
+    static get observedAttributes() { return ['scale', 'src']; }
+
+    attributeChangedCallback(name, _, value) {
+        switch(name) {
+            case 'scale':
+                this._scaleChanged(value);
+                break;
+            case 'src':
+                this._srcChanged(value)
+                break;
+        }
+    }
+
+    _scaleChanged(scale) {
+        if (scale !== this.scale) {
+            this.scale = scale;
+            setMeta('icons-iconset', this._name, this);
+        }
+    }
+
+    _srcChanged(src) {
+        if (src !== this._src) {
+            this._src = src;
+            setMeta('icons-iconset', this._name, this);
+        }
     }
 
     async getIconNames() {
@@ -53,8 +86,8 @@ class XIconsetImg extends HTMLElement {
             <style>
                 :host {
                     display: inline-block;
-                    width: calc(${iconSize || this._size});
-                    height: calc(${iconSize || this._size} * ${this._iconRatio});
+                    width: calc(${iconSize || this._size} * ${this.scale});
+                    height: calc(${iconSize || this._size} * ${this.scale} * ${this._iconRatio});
                     vertical-align: middle;
                 }
                 i {
@@ -62,7 +95,7 @@ class XIconsetImg extends HTMLElement {
                     height: 100%;
                     width: 100%;
                     background: url(${this._src});
-                    background-size: calc(${iconSize || this._size} * ${this._iconsPerRow});
+                    background-size: calc(${iconSize || this._size} * ${this.scale} * ${this._iconsPerRow});
                     background-position: ${100 / (this._iconsPerRow-1) * x}% ${100 / (this._iconsPerRow-1) * y}%;
                     background-repeat: no-repeat;
                 }
