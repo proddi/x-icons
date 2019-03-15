@@ -130,7 +130,7 @@
 
             bytesizeIcons.iconNames.forEach(name => {
                 template.innerHTML = `<x-icon icon="bytesize:${name}" title="${name}"></x-icon>`;
-                root.appendChild(template.content.firstChild);
+                root.appendChild(template.content);
             });
         </script>
     </div>

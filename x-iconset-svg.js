@@ -1,23 +1,20 @@
-import { html, svg, render } from 'lit-html/lit-html.js';
-import { setMeta } from './meta.js';
-
+import { render, html, renderMarkup, setMeta } from './meta.js';
 
 const DEFAULT_VIEWBOX = "0 0 24 24";
 
 /**
-
-The `x-iconset-svg` element allows users to define their own icon sets that contain svg icons.
-
-
-@group X Elements
-@element x-iconset-svg
-@demo demo/index.html
-@homepage https://github.com/proddi/x-icons
-*/
+ *
+ * The `x-iconset-svg` element allows users to define their own icon sets that contain svg icons.
+ *
+ *
+ * @group X Elements
+ * @element x-iconset-svg
+ * @demo demo/index.html
+ * @homepage https://github.com/proddi/x-icons
+**/
 class XIconsetSvg extends HTMLElement {
     constructor() {
         super();
-        if (!this.hasAttribute('name')) this.setAttribute('name', 'default-iconset');
         this._name = this.getAttribute('name');
         this._href = this.getAttribute('href');
 
@@ -61,7 +58,6 @@ class XIconsetSvg extends HTMLElement {
         this.shadowRoot.querySelector('slot')
             .assignedElements()
             .filter(el => el instanceof SVGElement)
-            .map(svg => { console.log("inline-svg", svg, svg.attributes); return svg; })
             .map(svg => Array.from(svg.querySelectorAll('[id]'))
                         .map(node => [
                             node.getAttribute('id'),
@@ -138,47 +134,40 @@ class XIconsetSvg extends HTMLElement {
     }
 
     applyIcon(root, icon) {
-        const inlineIcon = this._inlineIcons[icon.iconName];
-        const svgTemplate = inlineIcon ? this._buildInlineSvgTemplate(inlineIcon) : this._buildHrefSvgTemplate(this._href, icon.iconName);
-        render(this.buildIconTemplate(icon.iconName, icon.size, svgTemplate), root);
+        renderMarkup(this.buildIconMarkup(icon), root);
     }
 
-    buildIconTemplate(iconName, iconSize, svgTemplate) {
-        return html`
+    buildIconMarkup(icon) {
+        const styles = `
             <style>
                 :host {
-                    width: ${iconSize || "1em"};
                     display: inline-block;
+                    line-height: 1;
+                    width: ${icon.size || "1em"};
+                    /* height: ${icon.size || "1em"}; */
                     vertical-align: middle;
+                    /* padding-bottom: 0.25em; */
                 }
                 svg {
                     width: 100%;
                     ${this.scale ? `transform: scale(${this.scale});` : ''}
                 }
             </style>
-            ${svgTemplate}
-        `
+        `;
+
+        const inlineIcon = this._inlineIcons[icon.iconName];
+        const svgTemplate = inlineIcon ? `
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="${inlineIcon.viewBox || DEFAULT_VIEWBOX}" style="fill:currentColor;${inlineIcon.style || ''}">
+                    ${inlineIcon.markup}
+                </svg>
+            ` : `
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="${this.viewBox || DEFAULT_VIEWBOX}" style="fill:currentColor;">
+                    <use href="${this._href}#${icon.iconName}"/>
+                </svg>
+            `;
+        return styles + svgTemplate;
     }
 
-    _buildHrefSvgTemplate(href, name) {
-        return svg`
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="${this.viewBox || DEFAULT_VIEWBOX}" style="fill:currentColor;">
-                <use href="${href}#${name}"/>
-            </svg>
-        `
-    }
-
-    _buildInlineSvgTemplate(inlineSvg) {
-        function svg2(strings, ...args) {
-            strings = strings.map(s => s.replace(/{{markup}}/g, inlineSvg.markup));
-            return svg(strings, ...args);
-        }
-        return svg2`
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="${inlineSvg.viewBox || DEFAULT_VIEWBOX}" style="fill:currentColor;${inlineSvg.style || ''}">
-                {{markup}}
-            </svg>
-        `
-    }
 }
 
 customElements.define('x-iconset-svg', XIconsetSvg);

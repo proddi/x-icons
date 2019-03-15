@@ -28,4 +28,29 @@ function unsubscribeMeta(ns, key, handler) {
     }
 }
 
-export { setMeta, getMeta, subscribeMeta, unsubscribeMeta }
+
+
+
+function renderMarkup(markup, root) {
+    const template = document.createElement('template');
+    template.innerHTML = markup;
+    while (root.hasChildNodes()) root.removeChild(root.childNodes[0]);
+    root.appendChild(root.ownerDocument.importNode(template.content, true));
+}
+
+
+
+
+function html(strings, ...params) {
+    const template = document.createElement('template');
+    template.innerHTML = params.reduce((markup, param, index) => markup + String(param) + strings[index+1], strings[0]);
+    return template;
+}
+
+function render(template, root) {
+    const clone = root.ownerDocument.importNode(template.content, true);
+    while (root.hasChildNodes()) root.removeChild(root.childNodes[0]);
+    root.appendChild(clone);
+}
+
+export { render, html, renderMarkup, setMeta, getMeta, subscribeMeta, unsubscribeMeta }

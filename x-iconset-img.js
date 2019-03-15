@@ -1,21 +1,18 @@
-import { html, render } from 'lit-html/lit-html.js';
-import { setMeta } from './meta.js';
-
+import { render, html, setMeta } from './meta.js';
 
 /**
-
-The `x-iconset-img` element allows users to define their own icon sets that contain sprite-map icons.
-
-
-@group X Elements
-@element x-iconset-img
-@demo demo/index.html
-@homepage https://github.com/proddi/x-icons
-*/
+ *
+ * The `x-iconset-img` element allows users to define their own icon sets that contain sprite-map icons.
+ *
+ *
+ * @group X Elements
+ * @element x-iconset-img
+ * @demo demo/index.html
+ * @homepage https://github.com/proddi/x-icons
+**/
 class XIconsetImg extends HTMLElement {
     constructor() {
         super();
-//        if (!this.hasAttribute('name')) this.setAttribute('name', 'default-iconset');
         this._name = this.getAttribute('name');
         this._src = this.getAttribute('src');
         this._size = this.getAttribute('size') || '1em';
@@ -70,8 +67,8 @@ class XIconsetImg extends HTMLElement {
         }
     }
 
-    async getIconNames() {
-        return Promise.resolve(this._icons);
+    get iconNames() {
+        return this._icons;
     }
 
     applyIcon(root, icon) {
@@ -88,6 +85,7 @@ class XIconsetImg extends HTMLElement {
                     display: inline-block;
                     width: ${iconSize || this._size};
                     height: calc(${iconSize || this._size} * ${this._iconRatio});
+                    line-height: 1;
                     vertical-align: middle;
                 }
                 i {
@@ -104,6 +102,7 @@ class XIconsetImg extends HTMLElement {
             <i></i>
         `
     }
+
 }
 
 customElements.define('x-iconset-img', XIconsetImg);

@@ -1,21 +1,19 @@
-import { render, html } from 'lit-html/lit-html.js';
 import { getMeta, subscribeMeta, unsubscribeMeta } from './meta.js';
 
 /**
-
-The `x-icon` element displays an icon. The size is defined in the icon-set and by default 1em.
-
-Example setting size to 32px x 32px:
-
-    <x-icon size="32px" icon="iconset:name"></x-icon>
-
-See `<x-iconset-svg>` and `<x-iconset-img>` for more information about how to create a custom iconset.
-
-@group X Elements
-@element x-icon
-@demo demo/index.html
-@homepage https://github.com/proddi/x-icons
-*/
+ *
+ * The `x-icon` element displays an icon. The size is defined in the icon-set and by default 1em.
+ * Example setting size to 32px x 32px:
+ *
+ *     <x-icon size="32px" icon="iconset:name"></x-icon>
+ *
+ * See `<x-iconset-svg>` and `<x-iconset-img>` for more information about how to create a custom iconset.
+ *
+ * @group X Elements
+ * @element x-icon
+ * @demo demo/index.html
+ * @homepage https://github.com/proddi/x-icons
+**/
 class XIcon extends HTMLElement {
     constructor() {
         super();

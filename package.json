@@ -1,8 +1,8 @@
 {
   "name": "@proddi/x-icons",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "icons the easy way",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "author": {
     "name": "proddi",
     "url": "https://github.com/proddi/x-icons"

@@ -6,7 +6,7 @@
 
 The `x-icons` package allows you easily to embed icons to your page.
 
-It comes with just one dependency and this is lit-html.
+And the best it doesn't come with any depndency. This means it's super fast.
 
 See: Documentation, Demo.
 
