@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script type="module">
+        import '../x-icon.js';
+        import './icons/line-icons.js';
+    </script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <x-iconset-svg name="transit" scale="1.3" icon-size="24x24" href="icons/transit-icons.svg"></x-iconset-svg>
+</head>
+<body>
+
+  <div class="container">
+    <div class="alert alert-info" role="alert">
+        A simple info alert—check with an <x-icon style="transform:scale(1.3)" s_ize="1.3em" icon="line:transit"></x-icon> icon!
+    </div>
+
+    <button type="button" class="btn btn-primary">
+        <x-icon icon="line:transit"></x-icon> Notifications <span class="badge badge-light">4<x-icon icon="line:transit"></x-icon></span>
+    </button>
+
+    <p>
+        <span class="badge badge-info">Info</span>
+        <span class="badge badge-danger">Danger<x-icon icon="line:transit"></x-icon></span>
+    </p>
+
+    <p>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#"><x-icon icon="transit:transit"></x-icon> Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Library</li>
+          </ol>
+        </nav>
+    </p>
+
+    <p>
+        <ul class="list-group">
+          <li class="list-group-item list-group-item-action active"><x-icon icon="transit:bus"></x-icon> Cras justo odio</li>
+          <li class="list-group-item list-group-item-action"><x-icon icon="transit:car"></x-icon> Dapibus ac facilisis in</li>
+          <li class="list-group-item list-group-item-action"><x-icon icon="transit:train"></x-icon> Morbi leo risus</li>
+          <li class="list-group-item list-group-item-action disabled"><x-icon icon="transit:walk"></x-icon> Vestibulum at eros</li>
+        </ul>
+    </p>
+
+    <p>
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link active" href="#"><x-icon icon="transit:bus"></x-icon> Bus</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><x-icon icon="transit:car"></x-icon> Car</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><x-icon icon="transit:train"></x-icon> Train</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"><x-icon icon="transit:bike"></x-icon> Bike</a>
+          </li>
+        </ul>
+    </p>
+
+    <p>
+        <div class="media">
+          <x-icon class="mr-3" size="64px" icon="transit:subway"></x-icon>
+          <div class="media-body">
+            <h5 class="mt-0">Media heading</h5>
+            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+          </div>
+        </div>
+    </p>
+
+    <p>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+          Launch <x-icon icon="transit:bus"></x-icon> Bus modal
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><x-icon icon="transit:bus"></x-icon> Bus title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                Something about <x-icon icon="transit:bus"></x-icon> busses.
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"><x-icon icon="transit:place"></x-icon> Close</button>
+                <button type="button" class="btn btn-primary"><x-icon icon="transit:walk"></x-icon> Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+    </p>
+
+    <p>
+        <nav aria-label="Page navigation example">
+          <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#"><x-icon icon="bytesize:i-chevron-left"></x-icon> Previous</a></li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">Next <x-icon icon="bytesize:i-chevron-right"></x-icon></a></li>
+          </ul>
+        </nav>
+    </p>
+
+    <div id="icons">
+        <style>
+            #icons x-icon {
+                width: 2em;
+                padding: .5em;
+            }
+            #icons x-icon:hover {
+                color: red;
+                box-shadow: 0 0 3px 1px red;
+            }
+        </style>
+        <h4>Bytesize icons:</h4>
+        <script type="module">
+            import { bytesizeIcons } from './icons/bytesize-icons.js';
+
+            const root = document.querySelector('#icons');
+            const template = document.createElement('template');
+
+            bytesizeIcons.iconNames.forEach(name => {
+                template.innerHTML = `<x-icon icon="bytesize:${name}" title="${name}"></x-icon>`;
+                root.appendChild(template.content.firstChild);
+            });
+        </script>
+    </div>
+
+    <div style="position: relative; padding: 1rem; margin: 1rem -15px 0; border: solid #f8f9fa; border-width: .2rem 0 0; background-color: #f8f9fa!important;">
+        <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header">
+            <x-icon class="rounded mr-2" icon="transit:bus"></x-icon>
+            <strong class="mr-auto">Bootstrap</strong>
+            <small>11 mins ago</small>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="toast-body">
+            Hello <x-icon icon="transit:walk"></x-icon> bus! This is a toast message.
+          </div>
+        </div>
+    </div>
+
+
+
+
+
+  </div>
+
+  <script>
+    console.time('webcomponents-loaded');
+    const undefinedTags = [...document.querySelectorAll(':not(:defined)')]
+        .map(el => el.localName)
+        .filter((tag, idx, list) => list.indexOf(tag) === idx)
+        ;
+    Promise.all(undefinedTags.map(tag => customElements.whenDefined(tag)))
+        .then(_ => console.timeEnd('webcomponents-loaded'))
+        ;
+  </script>
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -14,6 +14,10 @@
             margin-left: 20%;
             margin-right: 20%;
         }
+
+        *:not(:defined) {
+            background: red;
+        }
     </style>
 
     <style>
@@ -53,9 +57,9 @@
   <demo-snippet id="demo-integration" class="centered-demo">
     <template>
       <!-- SVG iconset with name "transit" (no own colors) -->
-      <x-iconset-svg name="transit" href="icons/transit-icons.svg"></x-iconset-svg>
+      <x-iconset-svg name="transit" icon-size="24x24" href="icons/transit-icons.svg"></x-iconset-svg>
       <!-- SVG iconset with name "transit-colored-big" (own colors, default icon render-size is "3em") -->
-      <x-iconset-svg name="transit-colored-big" size="3em" href="icons/transit-icons-color-asset.svg"></x-iconset-svg>
+      <x-iconset-svg name="transit-colored-big" href="icons/transit-icons-color-asset.svg"></x-iconset-svg>
       <!-- SVG iconset with name "transit-colored" (own colors, svg have viewBox="0 0 48 48") -->
       <x-iconset-svg name="transit-colored" icon-size="48" href="icons/transit-icons-colored.svg"></x-iconset-svg>
     </template>
@@ -80,6 +84,11 @@
       <span style="font-size:2em"><x-icon icon="transit:bus"></x-icon>2em</span>
       <span style="font-size:24px;color:red"><x-icon icon="transit:bus"></x-icon>24px / red</span>
       <span style="font-size:calc(1em + 10px);color:blue"><x-icon icon="transit:bus"></x-icon>calc(1em + 10px) / blue</span>
+      <hr>
+      <ul>
+        <li><x-icon icon="transit:bus"></x-icon>Bus</li>
+        <li><x-icon icon="transit:tram"></x-icon>Tram</li>
+      </ul>
     </template>
   </demo-snippet>
 
@@ -102,9 +111,11 @@
     </template>
   </demo-snippet>
 
-  <h3>SVG icons with own colors</h3>
+  <h3>SVG icons with own colors <small>(needs viewBox hint)</small></h3>
   <demo-snippet id="demo-colored" class="centered-demo">
     <template>
+      <!-- SVG iconset with name "transit-colored" (own colors, svg have viewBox="0 0 48 48") -->
+      <x-iconset-svg name="transit-colored" icon-size="48" href="icons/transit-icons-colored.svg"></x-iconset-svg>
       <x-icon size="3em" icon="transit-colored:bike"></x-icon>
       <x-icon size="3em" icon="transit-colored:car"></x-icon>
       <x-icon size="3em" icon="transit-colored:bus"></x-icon>
@@ -113,17 +124,34 @@
     </template>
   </demo-snippet>
 
-  <h3>SVG iconset with embeded icons</h3>
-  <demo-snippet id="demo-colored" class="centered-demo">
+  <h3>SVG icons with own colors <small>(embedded viewBox, no hint needed)</small></h3>
+  <demo-snippet id="demo-colored2" class="centered-demo">
     <template>
-      <x-iconset-svg name="inline" icon-size="16">
-        <svg>
-          <circle id="circle" cx="8" cy="8" r="8"/>
-          <rect id="square" x="1" y="1" width="14" height="14"/>
+      <x-iconset-svg name="transit-colored-2" href="icons/transit-icons-color-asset.svg"></x-iconset-svg>
+      <x-icon size="3em" icon="transit-colored-2:bike"></x-icon>
+      <x-icon size="3em" icon="transit-colored-2:car"></x-icon>
+      <x-icon size="3em" icon="transit-colored-2:bus"></x-icon>
+      <x-icon size="3em" icon="transit-colored-2:train"></x-icon>
+      <x-icon size="3em" icon="transit-colored-2:tram"></x-icon>
+    </template>
+  </demo-snippet>
+
+  <h3>SVG iconset with embeded icons</h3>
+  <demo-snippet id="demo-inline" class="centered-demo">
+    <template>
+      <style>
+        #demo-inline > x-icon:hover {
+            box-shadow: 0px 0px 5px 2px red;
+        }
+      </style>
+      <x-iconset-svg name="inline" scale="1.3">
+        <svg style="fill:red;" viewBox="0 0 32 32">
+          <circle id="circle" cx="50%" cy="50%" r="30%"/>
+          <rect id="square" x="20%" y="20%" width="60%" height="60%"/>
         </svg>
       </x-iconset-svg>
-      <x-icon size="3em" icon="inline:circle"></x-icon>Circle
-      <x-icon size="3em" icon="inline:square"></x-icon>Square
+      <x-icon icon="inline:circle"></x-icon>Circle
+      <x-icon icon="inline:square"></x-icon>Square
     </template>
   </demo-snippet>
 
@@ -135,7 +163,7 @@
             filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, .25)) drop-shadow(0px 0px 1px black);
         }
       </style>
-      <x-iconset-img name="raster-64" scale="2" width="256" icon-size="64" src="icons/raster-icons-64.png"
+      <x-iconset-img name="raster-64" width="256" icon-size="64" src="icons/raster-icons-64.png"
             icons="favorite play valid map-marker place profile star home invalid star2 route preferences layers date my-profile"></x-iconset-img>
       <span><x-icon icon="raster-64:place"></x-icon>(iconset-size)</span>
       <span><x-icon size="3em" icon="raster-64:profile"></x-icon>3em</span>
@@ -145,5 +173,28 @@
     </template>
   </demo-snippet>
 
+  <h3>Imported icons</h3>
+  <demo-snippet id="demo-imported" class="centered-demo">
+    <template>
+      <script type="module">
+        import './icons/line-icons.js';
+      </script>
+      <x-icon icon="line:x"></x-icon>Foo
+      <x-icon icon="line:y"></x-icon>Bar
+      <x-icon icon="line:xy"></x-icon>Buzz
+      <x-icon icon="line:transit"></x-icon>Transit
+    </template>
+  </demo-snippet>
+
+  <script>
+    console.time('webcomponents-loaded');
+    const undefinedTags = [...document.querySelectorAll(':not(:defined)')]
+        .map(el => el.localName)
+        .filter((tag, idx, list) => list.indexOf(tag) === idx)
+        ;
+    Promise.all(undefinedTags.map(tag => customElements.whenDefined(tag)))
+        .then(_ => console.timeEnd('webcomponents-loaded'))
+        ;
+  </script>
 </body>
 </html>

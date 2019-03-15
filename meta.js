@@ -1,18 +1,16 @@
-console.warn("~ meta storage initialized");
-
-const STORAGE = {};
+const META = {};
 const SUBSCRIBERS = {};
 
 
 function getMeta(ns, key, _default=undefined) {
-    let scope = STORAGE[ns] || {};
+    let scope = META[ns] || {};
     let meta = (key in scope) ? scope[key] : _default;
     return meta;
 }
 
 function setMeta(ns, key, meta) {
-    let scope = STORAGE[ns] = STORAGE[ns] || {};
-    (STORAGE[ns] = scope)[key] = meta;
+    let scope = META[ns] = META[ns] || {};
+    (META[ns] = scope)[key] = meta;
     // notify subscribers
     ((SUBSCRIBERS[ns] || {})[key] || []).forEach(handler => handler(meta));
 }

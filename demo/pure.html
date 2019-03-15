@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script type="module" src="./icons/bytesize-icons.js"></script>
+</head>
+<body>
+
+  <h1>List of icons <x-icon icon="bytesize:i-photo"></x-icon></h1>
+  <ul>
+    <li><x-icon icon="bytesize:i-lock"></x-icon> Locked</li>
+    <li><x-icon icon="bytesize:i-location"></x-icon> Place</li>
+    <li><x-icon icon="bytesize:i-trash"></x-icon> Trash</li>
+  </ul>
+
+  <script>
+    console.time('webcomponents-loaded');
+    const undefinedTags = [...document.querySelectorAll(':not(:defined)')]
+        .map(el => el.localName)
+        .filter((tag, idx, list) => list.indexOf(tag) === idx)
+        ;
+    Promise.all(undefinedTags.map(tag => customElements.whenDefined(tag)))
+        .then(_ => console.timeEnd('webcomponents-loaded'))
+        ;
+  </script>
+</body>
+</html>

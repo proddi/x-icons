@@ -86,8 +86,8 @@ class XIconsetImg extends HTMLElement {
             <style>
                 :host {
                     display: inline-block;
-                    width: calc(${iconSize || this._size} * ${this.scale});
-                    height: calc(${iconSize || this._size} * ${this.scale} * ${this._iconRatio});
+                    width: ${iconSize || this._size};
+                    height: calc(${iconSize || this._size} * ${this._iconRatio});
                     vertical-align: middle;
                 }
                 i {
@@ -95,9 +95,10 @@ class XIconsetImg extends HTMLElement {
                     height: 100%;
                     width: 100%;
                     background: url(${this._src});
-                    background-size: calc(${iconSize || this._size} * ${this.scale} * ${this._iconsPerRow});
+                    background-size: calc(${iconSize || this._size} * ${this._iconsPerRow});
                     background-position: ${100 / (this._iconsPerRow-1) * x}% ${100 / (this._iconsPerRow-1) * y}%;
                     background-repeat: no-repeat;
+                    ${this.scale ? `transform: scale(${this.scale});` : ''}
                 }
             </style>
             <i></i>

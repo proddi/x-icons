@@ -39,11 +39,8 @@ class XIcon extends HTMLElement {
         this.iconName = null;
         this.iconSetName = null;
 
-
-        this._metaHandler = iconset => {
-            console.log("metaHandler:", iconset);
-            this._updateIcon();
-        }
+        // Handler getting called when attached iconset changed
+        this._metaHandler = iconset => this._updateIcon();
     }
 
     static get observedAttributes() { return ['icon', 'size']; }
