@@ -23,7 +23,20 @@ class XIconsetImg extends HTMLElement {
          * @type {Float}
          */
         this.scale = '1';
-        this._icons = this.getAttribute('icons').split(/[ ,]/);
+        this._icons = (this.getAttribute('icons') || "")
+                .split(/[ ,]/)
+                .map(name => name.trim())
+                .filter(name => name)
+                ;
+
+        this._aliases = {};
+        let aliases = (this.getAttribute('aliases') || "")
+                .split(/[ ,]/)
+                .filter(alias => alias)
+                .map(alias => alias.split('=').map(piece => piece.trim()))
+                .forEach(([alias, name]) => this._aliases[alias] = name)
+                ;
+
         let iconSize = this.getAttribute('icon-size');
         if (!iconSize) {
             iconSize = "24";
@@ -68,14 +81,15 @@ class XIconsetImg extends HTMLElement {
     }
 
     get iconNames() {
-        return this._icons;
+        return this._icons.concat(Object.keys(this._aliases));
     }
 
     applyIcon(root, icon) {
-        render(this.buildIconTemplate(icon.iconName, icon.size), root);
+        render(this.buildIconTemplate(icon, icon.size), root);
     }
 
-    buildIconTemplate(iconName, iconSize) {
+    buildIconTemplate(icon, iconSize) {
+        const iconName = this._findExistingIconName(icon.iconName);
         let index = this._icons.indexOf(iconName);
         let x = index % this._iconsPerRow;
         let y = Math.floor(index /this._iconsPerRow);
@@ -101,6 +115,13 @@ class XIconsetImg extends HTMLElement {
             </style>
             <i></i>
         `
+    }
+
+    _findExistingIconName(fullName) {
+        const names = fullName.split('||').map(name => name.trim());
+        const existingNames = this.iconNames;
+        const name = names.slice(0, -1).find(name => existingNames.indexOf(name) !== -1) || names.slice(-1)[0];
+        return this._aliases[name] || name;
     }
 
 }

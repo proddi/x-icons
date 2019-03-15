@@ -49,6 +49,14 @@ class XIconsetSvg extends HTMLElement {
             this._icons = icons.split(/[ ,]/);
         }
 
+        this._aliases = {};
+        let aliases = (this.getAttribute('aliases') || "")
+                .split(/[ ,]/)
+                .filter(alias => alias)
+                .map(alias => alias.split('=').map(piece => piece.trim()))
+                .forEach(([alias, name]) => this._aliases[alias] = name)
+                ;
+
         // render
         this.attachShadow({mode: 'open'});
         render(this.render(), this.shadowRoot);
@@ -106,7 +114,7 @@ class XIconsetSvg extends HTMLElement {
     }
 
     get iconNames() {
-        return Object.keys(this._inlineIcons).concat(this._icons || []);
+        return Object.keys(this._inlineIcons).concat(this._icons || []).concat(Object.keys(this._aliases));
     }
 
     /**
@@ -155,17 +163,26 @@ class XIconsetSvg extends HTMLElement {
             </style>
         `;
 
-        const inlineIcon = this._inlineIcons[icon.iconName];
+        const iconName = this._findExistingIconName(icon.iconName);
+
+        const inlineIcon = this._inlineIcons[iconName];
         const svgTemplate = inlineIcon ? `
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="${inlineIcon.viewBox || DEFAULT_VIEWBOX}" style="fill:currentColor;${inlineIcon.style || ''}">
                     ${inlineIcon.markup}
                 </svg>
             ` : `
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="${this.viewBox || DEFAULT_VIEWBOX}" style="fill:currentColor;">
-                    <use href="${this._href}#${icon.iconName}"/>
+                    <use href="${this._href}#${iconName}"/>
                 </svg>
             `;
         return styles + svgTemplate;
+    }
+
+    _findExistingIconName(fullName) {
+        const names = fullName.split('||').map(name => name.trim());
+        const existingNames = this.iconNames;
+        const name = names.slice(0, -1).find(name => existingNames.indexOf(name) !== -1) || names.slice(-1)[0];
+        return this._aliases[name] || name;
     }
 
 }
