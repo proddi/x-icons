@@ -17,6 +17,7 @@ class XIconsetImg extends HTMLElement {
         this._src = this.getAttribute('src');
         this._size = this.getAttribute('size') || '1em';
         this._width = this.getAttribute('width');
+        this._height = this.getAttribute('height');
 
         /**
          * The scale gets multiplied with the icon's size. (default=1)
@@ -49,6 +50,7 @@ class XIconsetImg extends HTMLElement {
         this._iconRatio = this._iconHeight / this._iconWidth;
 
         this._iconsPerRow = this._width / this._iconWidth;
+        this._iconsPerCol = this._height && (this._height / this._iconHeight) || Math.ceil(this._icons.length / this._iconsPerRow);
 
         setMeta('icons-iconset', this._name, this);
     }
@@ -92,7 +94,7 @@ class XIconsetImg extends HTMLElement {
         const iconName = this._findExistingIconName(icon.iconName);
         let index = this._icons.indexOf(iconName);
         let x = index % this._iconsPerRow;
-        let y = Math.floor(index /this._iconsPerRow);
+        let y = Math.floor(index / this._iconsPerRow);
         return html`
             <style>
                 :host {
@@ -107,8 +109,8 @@ class XIconsetImg extends HTMLElement {
                     height: 100%;
                     width: 100%;
                     background: url(${this._src});
-                    background-size: calc(${iconSize || this._size} * ${this._iconsPerRow});
-                    background-position: ${100 / (this._iconsPerRow-1) * x}% ${100 / (this._iconsPerRow-1) * y}%;
+                    background-size: ${100 * this._iconsPerRow}% ${100 * this._iconsPerCol}%;
+                    background-position: ${100 / (this._iconsPerRow-1) * x}% ${100 / (this._iconsPerCol-1) * y}%;
                     background-repeat: no-repeat;
                     ${this.scale ? `transform: scale(${this.scale});` : ''}
                 }
