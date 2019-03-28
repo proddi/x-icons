@@ -103,6 +103,8 @@ class XIconsetImg extends HTMLElement {
                     height: calc(${iconSize || this._size} * ${this._iconRatio});
                     line-height: 1;
                     vertical-align: middle;
+                    --icons-per-row: ${this._iconsPerRow};
+                    --icons-per-col: ${this._iconsPerCol};
                 }
                 i {
                     display: inline-block;
@@ -110,7 +112,7 @@ class XIconsetImg extends HTMLElement {
                     width: 100%;
                     background: url(${this._src});
                     background-size: ${100 * this._iconsPerRow}% ${100 * this._iconsPerCol}%;
-                    background-position: ${100 / (this._iconsPerRow-1) * x}% ${100 / (this._iconsPerCol-1) * y}%;
+                    background-position: ${100 / (this._iconsPerRow-1) * x}% ${this._iconsPerCol>1 ? 100 / (this._iconsPerCol-1) * y : 0}%;
                     background-repeat: no-repeat;
                     ${this.scale ? `transform: scale(${this.scale});` : ''}
                 }
